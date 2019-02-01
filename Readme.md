@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Boris Rukavishnikov](https://up.htmlacademy.ru/php/8/user/20411).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Зубов](https://htmlacademy.ru/profile/serj).
 
 ---
 
