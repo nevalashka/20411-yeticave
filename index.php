@@ -140,11 +140,15 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
-
-
-                <!--заполните этот список из массива категорий-->
                 <li class="nav__item">
-                    <a href="pages/all-lots.html">Название категории</a>
+                    <?php
+                        $index = 0;
+                        $num = count ($categories);
+                        while ($index < $num): ?>
+                    <a href="pages/all-lots.html">
+                            <?=$categories[$index];?></a>
+                        <?php $index++; ?>
+                        <?php endwhile; ?>
                 </li>
             </ul>
         </nav>
