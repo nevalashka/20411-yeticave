@@ -52,8 +52,7 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
             <section class="promo">
                 <h2 class="promo__title">Нужен стафф для катки?</h2>
                 <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
-                <ul class="promo__list">
-                    <? $categories = [
+                <? $categories = [
     'Доски и лыжи', 'Крепления', 'Ботинки',
     'Одежда', 'Инструменты', 'Разное'];?>
 
@@ -96,8 +95,16 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
     ],
 ];
                     ?>
+                <ul class="promo__list">
                     <li class="promo__item promo__item--boards">
-                        <a class="promo__link" href="pages/all-lots.html">Имя категории</a>
+                        <?php
+                        $index = 0;
+                        $num = count ($categories);
+                        while ($index < $num): ?>
+                        <a class="promo__link" href="pages/all-lots.html">
+                            <?=$categories[$index];?></a>
+                        <?php $index++; ?>
+                        <?php endwhile; ?>
                     </li>
                 </ul>
             </section>
@@ -133,6 +140,8 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
+
+
                 <!--заполните этот список из массива категорий-->
                 <li class="nav__item">
                     <a href="pages/all-lots.html">Название категории</a>
