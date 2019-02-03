@@ -96,16 +96,17 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
 ];
                     ?>
                 <ul class="promo__list">
-                    <li class="promo__item promo__item--boards">
-                        <?php
+                    <?php
                         $index = 0;
                         $num = count ($categories);
                         while ($index < $num): ?>
+                    <li class="promo__item promo__item--boards">
+
                         <a class="promo__link" href="pages/all-lots.html">
                             <?=$categories[$index];?></a>
-                        <?php $index++; ?>
-                        <?php endwhile; ?>
                     </li>
+                    <?php $index++; ?>
+                        <?php endwhile; ?>
                 </ul>
             </section>
             <section class="lots">
@@ -140,16 +141,16 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
-                <li class="nav__item">
-                    <?php
+                <?php
                         $index = 0;
                         $num = count ($categories);
                         while ($index < $num): ?>
+                <li class="nav__item">
                     <a href="pages/all-lots.html">
                             <?=$categories[$index];?></a>
-                        <?php $index++; ?>
-                        <?php endwhile; ?>
                 </li>
+                <?php $index++; ?>
+                        <?php endwhile; ?>
             </ul>
         </nav>
         <div class="main-footer__bottom container">
