@@ -30,18 +30,20 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
 
                 <nav class="user-menu">
 
-            <?php if ($is_auth == 1): ?>
-                <div class="user-menu__logged">
-                    <p><?=$user_name; ?></p>
-                </div>
-            <?php else: ?>
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                    <a href="#">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                    <a href="#">Вход</a>
-                    </li>
+                    <?php if ($is_auth == 1): ?>
+                    <div class="user-menu__logged">
+                        <p>
+                            <?=$user_name; ?>
+                        </p>
+                    </div>
+                    <?php else: ?>
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="#">Регистрация</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="#">Вход</a>
+                        </li>
                     </ul>
                     <?php endif; ?>
                 </nav>
@@ -56,7 +58,7 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
     'Доски и лыжи', 'Крепления', 'Ботинки',
     'Одежда', 'Инструменты', 'Разное'];?>
 
-                    <? $lots = [
+                <? $lots = [
     1 => [
         'title' => '2014 Rossignol District Snowboard',
         'category' => 'Доски и лыжи',
@@ -106,7 +108,7 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
                             <?=$categories[$index];?></a>
                     </li>
                     <?php $index++; ?>
-                        <?php endwhile; ?>
+                    <?php endwhile; ?>
                 </ul>
             </section>
             <section class="lots">
@@ -147,10 +149,10 @@ $user_name = 'Boris Rukavishnikov'; // укажите здесь ваше имя
                         while ($index < $num): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html">
-                            <?=$categories[$index];?></a>
+                        <?=$categories[$index];?></a>
                 </li>
                 <?php $index++; ?>
-                        <?php endwhile; ?>
+                <?php endwhile; ?>
             </ul>
         </nav>
         <div class="main-footer__bottom container">
