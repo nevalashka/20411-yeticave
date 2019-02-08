@@ -56,7 +56,7 @@
                 <?php foreach ($categories as $val): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html">
-                        <? echo $val; ?></a>
+                        <?= $val; ?></a>
                 </li>
                 <?php endforeach; ?>
             </ul>
