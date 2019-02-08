@@ -5,7 +5,7 @@
         <?php foreach ($categories as $val): ?>
         <li class="promo__item promo__item--boards">
             <a class="promo__link" href="pages/all-lots.html">
-                <? echo $val;?></a>
+                <?= $val;?></a>
         </li>
         <?php endforeach; ?>
     </ul>
