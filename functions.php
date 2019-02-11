@@ -1,4 +1,15 @@
 <?php
+date_default_timezone_set('Europe/Moscow');
+
+function time_count() {
+    $time_current = date_create("now");
+    $time_midnight = date_create("tomorrow midnight");
+    $time_difference = date_diff ($time_current, $time_midnight);
+    $time_before_midnight = date_interval_format ($time_difference, "%H:%I");
+    return $time_before_midnight;
+}
+
+
 function include_template($name, $data) {
     $name = 'templates/' . $name;
     $result = '';
