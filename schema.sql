@@ -4,7 +4,7 @@ CREATE DATABASE yeticave
 
 USE yeticave;
 
-CREATE TABLE IF NOT EXISTS `categoty` (
+CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL,
   `category` char(128) DEFAULT NULL
 );
@@ -30,7 +30,10 @@ CREATE TABLE IF NOT EXISTS `lots` (
   `url_picture` varchar(100) DEFAULT NULL,
   `start_price` int(5) DEFAULT NULL,
   `date_finish` datetime DEFAULT NULL,
-  `bid` int(5) DEFAULT NULL
+  `bid` int(5) DEFAULT NULL,
+  FOREIGN KEY (category_id)  REFERENCES category(id),
+  FOREIGN KEY (user_id)  REFERENCES users(id),
+  FOREIGN KEY (winner_id)  REFERENCES users(id),
 )
 
 CREATE TABLE IF NOT EXISTS `bids` (
@@ -38,7 +41,9 @@ CREATE TABLE IF NOT EXISTS `bids` (
   `user_id` int(11) NOT NULL,
   `lot_id` int(11) NOT NULL,
   `bid_date` date DEFAULT NULL,
-  `bid_amount` int(11) DEFAULT NULL
+  `bid_amount` int(11) DEFAULT NULL,
+  FOREIGN KEY (user_id)  REFERENCES users(id),
+  FOREIGN KEY (lot_id)  REFERENCES lots(id)
 );
 
 
@@ -50,7 +55,7 @@ ALTER TABLE `categoty`
   ADD KEY `category` (`category`);
 
 ALTER TABLE `lots`
-  ADD KEY `id` (`id`),
+  ADD PRIMARY KEY `id` (`id`),
   ADD KEY `name_lot` (`name_lot`);
 
 
