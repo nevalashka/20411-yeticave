@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
   `bid` int(5) DEFAULT NULL,
   FOREIGN KEY (category_id)  REFERENCES category(id),
   FOREIGN KEY (user_id)  REFERENCES users(id),
-  FOREIGN KEY (winner_id)  REFERENCES users(id),
+  FOREIGN KEY (winner_id)  REFERENCES users(id)
 )
 
 CREATE TABLE IF NOT EXISTS `bids` (
