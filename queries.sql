@@ -36,7 +36,7 @@ SELECT * FROM lots LIMIT 200; \\Получаем все лоты
 
 SELECT * FROM lots WHERE lot_id = 2; \\Показать лот с определенным id
 
-UPDATE lots SET name_lot = 'Новое название лота’ WHERE id = 2; \\ обновить название лота по его идентификатору
+UPDATE lots SET name_lot ="Новое название лота WHERE" id = 2; \\ обновить название лота по его идентификатору
 
 SELECT * FROM bids WHERE lot_id = 2 ORDER BY bid_date ASC; \\ получить список самых свежих ставок для лота по его идентификатору
 
