@@ -2,6 +2,12 @@
 
 require_once("functions.php");
 require_once("data.php");
+require_once("init.php");
+
+if (!$link) {
+    $error = mysqli_connect_error();
+    $content = include_template('error.php', ['error' => $error]);
+}
 
 $content = include_template("index.php", [
     "categories" => $categories,
