@@ -20,7 +20,7 @@ if (!$link) {
     }
 }
 
-print(include_template('index.php', ['content' => $content, 'categories' => $categories]));
+print(include_template('index.php', ['content' => $content, 'category' => $category]));
 
 
 $content = include_template("index.php", [
