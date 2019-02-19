@@ -11,13 +11,13 @@ if (!$link) {
     $sql = 'SELECT `id`, `category` FROM category';
     $result = mysqli_query($link, $sql);
 
-    if ($result) {
-        $category = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    }
-    else {
-        $error = mysqli_error($link);
-        $content = include_template('error.php', ['error' => $error]);
-    }
+//    if ($result) {
+//        $category = mysqli_fetch_all($result, MYSQLI_ASSOC);
+//    }
+//    else {
+//        $error = mysqli_error($link);
+//        $content = include_template('error.php', ['error' => $error]);
+//    }
 }
 
 print(include_template('index.php', ['content' => $content, 'categories' => $categories]));
