@@ -13,6 +13,12 @@ if (!$link) {
 
     if ($result) {
         $category = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        var_dump($category);
+        $content = include_template("index.php",
+        [
+            "categories" => $category,
+            "lots" => $lots
+        ]);
     }
     else {
         $error = mysqli_error($link);
@@ -20,20 +26,13 @@ if (!$link) {
     }
 }
 
-print(include_template('index.php', ['content' => $content, 'category' => $category]));
-
-
-$content = include_template("index.php", [
-    "categories" => $categories,
-    "lots" => $lots
-]);
 
 $layout = include_template("layout.php", [
     "content" => $content,
     "user_name" => $user_name,
     "title" => $title,
     "is_auth" => $is_auth,
-    "categories" => $categories
+    "categories" => $category
 ]);
 print($layout);
 

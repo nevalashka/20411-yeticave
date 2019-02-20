@@ -9,7 +9,6 @@ function time_count() {
     return $time_before_midnight;
 }
 
-
 function include_template($name, $data) {
     $name = 'templates/' . $name;
     $result = '';
