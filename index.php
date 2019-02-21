@@ -13,8 +13,8 @@ if (!$link) {
     $result = mysqli_query($link, $sql);
 
     if (!empty($result)) {
+        $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id';
 
-        $lots_sql = 'SELECT * FROM lots ORDER BY id DESC'; //тут сделать join с категориями
         $lots_result = mysqli_query($link, $lots_sql);
 
         if (!empty($lots_result)) {
@@ -46,4 +46,12 @@ $layout = include_template("layout.php", [
 ]);
 print($layout);
 
+/* 'SELECT * FROM lots ORDER BY id DESC'; //тут сделать join с категориями WHERE date_finish > NOW()  ORDER BY l.id DESC */
+
 ?>
+
+
+
+
+
+
