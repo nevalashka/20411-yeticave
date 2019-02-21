@@ -51,16 +51,18 @@
         </main>
     </div>
     <footer class="main-footer">
+        <?php if(!empty($categories)): ?>
         <nav class="nav">
             <ul class="nav__list container">
                 <?php foreach ($categories as $val): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html">
-                        <?= $val; ?></a>
+                        <?= $val["category"]; ?></a>
                 </li>
                 <?php endforeach; ?>
             </ul>
         </nav>
+        <?php endif; ?>
         <div class="main-footer__bottom container">
             <div class="main-footer__copyright">
                 <p>© 2019, YetiCave</p>

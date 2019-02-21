@@ -1,28 +1,38 @@
 <?php
 
+require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
-require_once("init.php");
+
+$category = "";
 
 if (!$link) {
-    $error = mysqli_connect_error();
-    $content = include_template('error.php', ['error' => $error]);
+    $content = error_content();
 } else {
     $sql = 'SELECT `id`, `category` FROM category';
     $result = mysqli_query($link, $sql);
 
-    if ($result) {
-        $category = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        var_dump($category);
-        $content = include_template("index.php",
-        [
-            "categories" => $category,
-            "lots" => $lots
-        ]);
+    if (!empty($result)) {
+
+        $lots_sql = 'SELECT * FROM lots ORDER BY id DESC'; //тут сделать join с категориями
+        $lots_result = mysqli_query($link, $lots_sql);
+
+        if (!empty($lots_result)) {
+            $category = fetch_all($result);
+            $lots = fetch_all($lots_result);
+
+            $content = include_template("index.php",
+            [
+                "categories" => $category,
+                "lots" => $lots
+            ]);
+        }
+        else {
+            $content = error_content($link);
+        }
     }
     else {
-        $error = mysqli_error($link);
-        $content = include_template('error.php', ['error' => $error]);
+        $content = error_content($link);
     }
 }
 
