@@ -22,7 +22,8 @@
             </div>
             <div class="lot__info">
                 <span class="lot__category">
-                    <?=$val['category_id']; ?>
+                    <?=$val['category']; ?>
+                    <!-- $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id'; -->
                 </span>
                 <h3 class="lot__title"><a class="text-link" href="pages/lot.html">
                         <?=$val["name_lot"]; ?></a></h3>
