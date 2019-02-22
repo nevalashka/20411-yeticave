@@ -2,10 +2,10 @@
 
 $is_auth = rand(0, 1);
 $user_name = "Boris Rukavishnikov";
-$title = "Заголовок страницы";
+$title = "Главная - YetiCave";
 
-$categories=[ 'Доски и лыжи' , 'Крепления' , 'Ботинки' , 'Одежда' , 'Инструменты' , 'Разное' ];
-$lots=[
+ $categories=[ 'Доски и лыжи' , 'Крепления' , 'Ботинки' , 'Одежда' , 'Инструменты' , 'Разное' ];
+ $lots=[
     1=>
     [
     'title' => '2014 Rossignol District Snowboard',

@@ -5,7 +5,7 @@
         <?php foreach ($categories as $val): ?>
         <li class="promo__item promo__item--boards">
             <a class="promo__link" href="pages/all-lots.html">
-                <?= $val;?></a>
+                <?= $val["category"];?></a>
         </li>
         <?php endforeach; ?>
     </ul>
@@ -18,19 +18,20 @@
         <?php foreach ($lots as $key => $val): ?>
         <li class="lots__item lot">
             <div class="lot__image">
-                <img src="<?=$val[url]; ?>" width="350" height="260" alt="">
+                <img src="<?=$val['url_picture']; ?>" width="350" height="260" alt="">
             </div>
             <div class="lot__info">
                 <span class="lot__category">
-                    <?=$val[category]; ?>
+                    <?=$val['category']; ?>
+                    <!-- $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id'; -->
                 </span>
                 <h3 class="lot__title"><a class="text-link" href="pages/lot.html">
-                        <?=$val[title]; ?></a></h3>
+                        <?=$val["name_lot"]; ?></a></h3>
                 <div class="lot__state">
                     <div class="lot__rate">
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost">
-                            <?=price_format($val[price]); ?>
+                            <?=price_format($val["start_price"]); ?>
                         </span>
                     </div>
                     <div class="lot__timer timer">
