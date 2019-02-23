@@ -46,8 +46,6 @@ $layout = include_template("layout.php", [
 ]);
 print($layout);
 
-/* 'SELECT * FROM lots ORDER BY id DESC'; //тут сделать join с категориями WHERE date_finish > NOW()  ORDER BY l.id DESC */
-
 ?>
 
 
