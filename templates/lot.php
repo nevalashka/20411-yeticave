@@ -1,45 +1,22 @@
 <nav class="nav">
     <ul class="nav__list container">
+        <?php foreach ($categories as $val): ?>
         <li class="nav__item">
-            <a href="all-lots.html">Доски и лыжи</a>
+            <a href="all-lots.html"><?= $val["category"];?></a>
         </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Крепления</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Ботинки</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Одежда</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Инструменты</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Разное</a>
-        </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
 <section class="lot-item container">
-    <h2><?=$val["name_lot"]; ?></h2>
+    <h2><?=$lot[0]["name_lot"];?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
-                <img src="<?=$val['url_picture']; ?>" width="730" height="548" alt="Сноуборд">
+                <img src="<?=$lot[0]['url_picture']; ?>" width="730" height="548" alt="Сноуборд">
             </div>
-            <p class="lot-item__category">Категория: <span><?=$val['category']; ?></span></p>
+            <p class="lot-item__category">Категория: <span><?=$lot[0]['category']; ?></span></p>
             <p class="lot-item__description">
-                <?=$val['description']; ?>
-                Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
-                снег
-                мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
-                снаряд
-                отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
-                кэмбер
-                позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
-                просто
-                посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
-                равнодушным.
+                <?=$lot[0]['description']; ?>
             </p>
         </div>
         <div class="lot-item__right">
