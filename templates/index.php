@@ -25,7 +25,7 @@
                     <?=$val['category']; ?>
                 </span>
                 <h3 class="lot__title">
-                    <a class="text-link" href="lot.php?=<?=$val['id'];?>">
+                    <a class="text-link" href="lot.php?id=<?=$val['id'];?>">
                         <?=$val["name_lot"]; ?>
                     </a>
                 </h3>
