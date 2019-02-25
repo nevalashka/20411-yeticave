@@ -13,7 +13,7 @@ if (!$link) {
     $result = mysqli_query($link, $sql);
 
     if (!empty($result)) {
-        $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id';
+        $lots_sql = 'SELECT l.id, user_id, category, date_creation, name_lot, description, url_picture, start_price, date_finish, category FROM lots l JOIN category c ON l.category_id = c.id';
 
         $lots_result = mysqli_query($link, $lots_sql);
 
