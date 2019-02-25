@@ -4,43 +4,40 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
-$url_picture = "";
+$category = "";
 
-$category = ""; // тут мы объявляем переменную, чтобы потом использовать
-
-if (!$link) {    //тут проверям наше подключение к базе, если его нет, то пишем ошибку
-    $content = error_content();   // в переменную контент вызываем функцию error_content, она скорее всего показывает ошибку
+if (!$link) {
+    $content = error_content();
 } else {
-    $sql = 'SELECT `id`, `category` FROM category'; // если подключение есть, то мы делаем запрос уже в таблицу категории (хотя вроде в файле лотс.пхп нам не нужны категории)
-    $result = mysqli_query($link, $sql);     //в переменную результ мы вызываем какую-то функцию которую нет в файле функций... или это стандартная функция в пхп?
+    $sql = 'SELECT `id`, `category` FROM category';
+    $result = mysqli_query($link, $sql);
 
    // if (!empty($result)) {//тут проверяем что результ не пустоуй?
         if(isset($_GET['id'])) {
             $lot_id = $_GET['id'];
-        $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id WHERE l.id="'.$lot_id.'"';// тут делаем запрос в таблицу лотов и связываем с категориями
-
-        $lots_result = mysqli_query($link, $lots_sql); //тут опять что-то с таблицами, не понимаю почему другая переменная
+        $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id WHERE l.id="'.$lot_id.'"';
+        $lots_result = mysqli_query($link, $lots_sql);
 
         if (!empty($lots_result)) {
-            $category = fetch_all($result); //тут сложное блядство с массивами
-            $lots = fetch_all($lots_result); // тут тоже непонятно что и куда
+            $category = fetch_all($result);
+            $lots = fetch_all($lots_result);
 
-            $content = include_template("lot.php",  //тут уже подстановка контента в переменную которая и будет показывать результат в странице
+            $content = include_template("lot.php",
             [
                 "lot" => $lots,
                 "categories" => $category
             ]);
         }
         else {
-            $content = error_content($link);  //тут ошибки
+            $content = error_content($link);
         }
 
     }
     else {
-        $content = error_content($link); // и опять ошибки
+        $content = error_content($link);
     }
 }
-$layout = include_template("layout.php", [ //это футер и шапочка
+$layout = include_template("layout.php", [
     "content" => $content,
     "user_name" => $user_name,
     "title" => $title,
