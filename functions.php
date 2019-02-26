@@ -4,6 +4,23 @@ ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
+/**
+ * Проверяет, что переданная дата соответствует формату ДД.ММ.ГГГГ
+ * @param string $date строка с датой
+ * @return bool
+ */
+function check_date_format($date) {
+    $result = false;
+    $regexp = '/(\d{2})\.(\d{2})\.(\d{4})/m';
+    if (preg_match($regexp, $date, $parts) && count($parts) == 4) {
+        $result = checkdate($parts[2], $parts[1], $parts[3]);
+    }
+    return $result;
+}
+check_date_format("04.02.2019"); // true
+check_date_format("15.23.1989"); // false
+check_date_format("1989-15-02"); // false
+
 function time_count() {
     $time_current = date_create("now");
     $time_midnight = date_create("tomorrow midnight");
