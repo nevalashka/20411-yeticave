@@ -23,9 +23,9 @@
 
                 <option>Выберите категорию</option>
                 <?php foreach ($categories as $val): ?>
-                <option value="<?= $val["category"];?>">
-                <?php endforeach; ?>
+                <option value=""><?= $val["category"];?>
                 </option>
+                <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>
         </div>
