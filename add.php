@@ -50,6 +50,8 @@ if (!$link) {
 
 }
 
+// валидация полей
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$lot = $_POST;
 
