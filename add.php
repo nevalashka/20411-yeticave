@@ -6,6 +6,7 @@ require_once("data.php");
 
 $categories = "";
 
+
 if (!$link) {
     $content = error_content();
 } else {
@@ -21,21 +22,40 @@ if (!$link) {
                                 [
                                     'categories' => $category
                                 ]);
+
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $lot = $_POST['lot'];
 
         $filename = uniqid() . '.jpg';
         $lot['path'] = $filename;
         move_uploaded_file($_FILES['url_picture']['tmp_name'], 'uploads/' . $filename);
 
-        $sql = 'INSERT INTO lots (date_creation, user_id, category, name_lot, description, url_picture, start_price, date_finish)
-        VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO lots (
+        date_creation,
+        category_id,
+        user_id,
+        name_lot,
+        description,
+        url_picture,
+        start_price,
+        date_finish,
+        bid_step,
+        )
+        VALUES (NOW(), ?, 1, ?, ?, ?, ?, ?, ?, ?);';
+
         $stmt = db_get_prepare_stmt ($link, $sql,
-                                    [$lot['category'],
-                                     $lot['lot_name'],
+                                    [
+                                     $lot['date_creation'],
+                                     $lot['category'],
+                                     $lot['user_id'],
+                                     $lot['name_lot'],
                                      $lot['description'],
-                                     $lot['url_picture']
+                                     $lot['url_picture'],
+                                     $lot['date_finish'],
+                                     $lot['start_price'],
+                                     $lot['bid_step']
                                     ]);
+
         $res = mysqli_stmt_execute($stmt);
 
         if ($res) {
@@ -52,7 +72,7 @@ if (!$link) {
 
 // валидация полей
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+/*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$lot = $_POST;
 
 	$required = ['name_lot', 'description', 'category', 'start_price', 'date_finish', 'lot_img'];
@@ -97,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
 	$page_content = include_template('add.php', []);
 }
-
+*/
 
 
 $layout = include_template("layout.php", [

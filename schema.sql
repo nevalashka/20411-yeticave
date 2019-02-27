@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
   `description` text,
   `url_picture` varchar(100) DEFAULT NULL,
   `start_price` int(5) NOT NULL,
+  `bid_step` int(5) NOT NULL,
   `date_finish` datetime NOT NULL,
   FOREIGN KEY (category_id)  REFERENCES category(id),
   FOREIGN KEY (user_id)  REFERENCES users(id),
