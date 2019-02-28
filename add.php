@@ -22,9 +22,9 @@ if (!$link) {
             // если строка нашлась в массиве - ошибки по категориям нет, можно дальще проверять остальные поля
             // если строка не нашлась - значит в $errors мы записываем ошибку по категориям
 
-            if($lot['category'] == $category['id']) {
+     //       if($lot['category'] == $category['id']) {
                 // если строка не нашлась в массиве - ошибка есть и мы ее записываем в $errors['category'] = 'Выберите категорию';
-            }
+    //        }
 
             // на пустоту проверить name_lot, если пустой - пишем ошибку, если не путой - ошибку не пишем
             if(empty($lot['name_lot'])) {
@@ -53,11 +53,11 @@ if (!$link) {
             // если $errors пустой - тогда мы можем выполнять $sql_insert
 
             if(empty($errors)) {
-                $sql_insert = 'INSERT INTO lots ( date_creation, category_id, user_id, name_lot, description, url_picture, start_price, date_finish, bid_step ) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?);';
+                $sql_insert = 'INSERT INTO lots ( category_id, user_id, name_lot, description, url_picture, start_price, date_finish, bid_step )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
 
                 $stmt = db_get_prepare_stmt($link, $sql_insert, [
                      $lot['category'],
-                     $lot['user_id'],
                      $lot['name_lot'],
                      $lot['description'],
                      $lot['url_picture'],
@@ -70,7 +70,7 @@ if (!$link) {
 
                 if ($res) {
                     $lot_id = mysqli_insert_id($link);
-                    header("Location: lot.php?id=" . $lot_id);
+                    header("Location: lot.php?id=". $lot_id);
                 }
                 else {
                     $content = error_content($link);

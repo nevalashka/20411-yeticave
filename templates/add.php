@@ -15,7 +15,7 @@
             <!-- form__item--invalid -->
             <label for="lot-name">Наименование</label>
             <input id="lot-name" type="text" name="name_lot" placeholder="Введите наименование лота" required>
-            <span class="form__error">Введите наименование лота</span>
+            <?php if(isset($errors['name_lot'])): ?><span class="form__error"><?=$errors['name_lot'];?></span><?php endif; ?>
         </div>
         <div class="form__item">
             <label for="category">Категория</label>
@@ -25,13 +25,13 @@
                 <option value="<?= $val["id"];?>"><?= $val["category"];?></option>
                 <?php endforeach; ?>
             </select>
-            <span class="form__error">Выберите категорию</span>
+            <?php if(isset($errors['category'])): ?><span class="form__error"><?=$errors['category'];?></span><?php endif; ?>
         </div>
     </div>
     <div class="form__item form__item--wide">
         <label for="message">Описание</label>
         <textarea id="message" name="description" placeholder="Напишите описание лота" required></textarea>
-        <span class="form__error">Напишите описание лота</span>
+        <?php if(isset($errors['description'])): ?><span class="form__error"><?=$errors['description'];?></span><?php endif; ?>
     </div>
     <div class="form__item form__item--file">
         <!-- form__item--uploaded -->
@@ -48,7 +48,7 @@
                 <span>+ Добавить</span>
             </label>
         </div>
-        <span class="form__error">Добавьте изображение лота</span>
+        <?php if(isset($errors['url_picture'])): ?><span class="form__error"><?=$errors['url_picture'];?></span><?php endif; ?>
     </div>
     <div class="form__container-three">
         <div class="form__item form__item--small">
@@ -59,12 +59,12 @@
         <div class="form__item form__item--small">
             <label for="lot-step">Шаг ставки</label>
             <input id="lot-step" type="number" name="bid_step" placeholder="0" required>
-            <span class="form__error">Введите шаг ставки</span>
+            <?php if(isset($errors['bid_step'])): ?><span class="form__error"><?=$errors['bid_step'];?></span><?php endif; ?>
         </div>
         <div class="form__item">
             <label for="lot-date">Дата окончания торгов</label>
             <input class="form__input-date" id="lot-date" type="date" name="date_finish" required>
-            <span class="form__error">Введите дату завершения торгов</span>
+            <?php if(isset($errors['date_finish'])): ?><span class="form__error"><?=$errors['date_finish'];?></span><?php endif; ?>
         </div>
     </div>
     <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
