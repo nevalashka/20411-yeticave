@@ -4,123 +4,96 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
-$title = "Добавление лота";
-
-$categories = "";
-
+$category = "";
 
 if (!$link) {
     $content = error_content();
 } else {
-    $sql = 'SELECT `id`, `category` FROM category';
-    $result = mysqli_query($link, $sql);
-    if($result) {
-        $category = fetch_all($result);
+    $sql_category = 'SELECT `id`, `category` FROM category';
+    $result_category = mysqli_query($link, $sql_category);
+    if($result_category) {
+        $category = fetch_all($result_category);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $lot = $_POST;
+            $lot['user_id'] = $user_id;
+            // проверка всех полей
+            // $lot['category'] == $category['id']  найти в массиве строку
+            // если строка нашлась в массиве - ошибки по категориям нет, можно дальще проверять остальные поля
+            // если строка не нашлась - значит в $errors мы записываем ошибку по категориям
+
+            if($lot['category'] == $category['id']) {
+                // если строка не нашлась в массиве - ошибка есть и мы ее записываем в $errors['category'] = 'Выберите категорию';
+            }
+
+            // на пустоту проверить name_lot, если пустой - пишем ошибку, если не путой - ошибку не пишем
+            if(empty($lot['name_lot'])) {
+                $errors['name_lot'] = "Введите название лота";
+            }
+
+            if(empty($lot['description'])) {
+                $errors['description'] = "Введите описание лота";
+            }
+
+            if(!empty($_FILES['url_picture']['name'])) {
+                $filename = "uploads/" . uniqid() . '.jpg';
+                $lot['path'] = $filename;
+                move_uploaded_file($_FILES['url_picture']['tmp_name'], $filename);
+            }
+            else {
+                $errors['url_picture'] = "Загрузите изображение лота";
+            }
+
+            // start_price проверяем, действительно ли это число. Если это не число - пишем ошибку. $errors['start_price'] = "Введите начальную стоимость";
+
+            // date_finish - проверяем удовлетворяет ли дата условиям (с помощью функции, также не вчерашнее число должно быть)
+
+            // bid_step - такая же проверка как и start_price
+
+            // если $errors пустой - тогда мы можем выполнять $sql_insert
+
+            if(empty($errors)) {
+                $sql_insert = 'INSERT INTO lots ( date_creation, category_id, user_id, name_lot, description, url_picture, start_price, date_finish, bid_step ) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?);';
+
+                $stmt = db_get_prepare_stmt($link, $sql_insert, [
+                     $lot['category'],
+                     $lot['user_id'],
+                     $lot['name_lot'],
+                     $lot['description'],
+                     $lot['url_picture'],
+                     $lot['start_price'],
+                     $lot['date_finish'],
+                     $lot['bid_step']
+                ]);
+
+                $res = mysqli_stmt_execute($stmt);
+
+                if ($res) {
+                    $lot_id = mysqli_insert_id($link);
+                    header("Location: lot.php?id=" . $lot_id);
+                }
+                else {
+                    $content = error_content($link);
+                }
+            }
+            else {
+                $content = include_template('add.php', [
+                    'categories' => $category,
+                    'errors' => $errors
+                ]);
+            }
+        }
+
+        else {
+            $content = include_template('add.php', [
+                'categories' => $category
+            ]);
+        }
     }
     else {
         $content = error_content($link);
     }
-    $content = include_template('add.php',
-                                [
-                                    'categories' => $category
-                                ]);
-
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        $filename = uniqid() . '.jpg';
-        $lot['path'] = $filename;
-        move_uploaded_file($_FILES['url_picture']['tmp_name'], 'img/' . $filename);
-
-        $sql = 'INSERT INTO lots (
-        name_lot,
-        description,
-        url_picture,
-        start_price,
-        date_finish,
-        bid_step,
-        user_id,
-        category_id
-        )
-        VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
-
-        $stmt = db_get_prepare_stmt ($link, $sql,
-                                    [
-                                     $lot['date_creation'],
-                                     $lot['category_id'],
-                                     $lot['user_id'],
-                                     $lot['name_lot'],
-                                     $lot['description'],
-                                     $lot['url_picture'],
-                                     $lot['date_finish'],
-                                     $lot['start_price'],
-                                     $lot['bid_step']
-                                    ]);
-
-        $res = mysqli_stmt_execute($stmt);
-
-        if ($res) {
-            $gif_id = mysqli_insert_id($link);
-
-            header("Location: lot.php?id=" . $lot_id);
-        }
-        else {
-            $content = error_content($link);
-        }
-    }
-
-
 }
-
-// валидация полей
-
-/*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$lot = $_POST;
-
-	$required = ['name_lot', 'description', 'category', 'start_price', 'date_finish', 'lot_img'];
-	$dict = ['name_lot' => 'Название', 'description' => 'Описание', 'file' => 'Гифка'];
-	$errors = [];
-    foreach ($required as $key) {
-		if (empty($_POST[$key])) {
-            $errors[$key] = 'Это поле надо заполнить';
-		}
-	}
-
-    if (isset($_FILES['url_picture']['name'])) {
-		$tmp_name = $_FILES['url_picture']['tmp_name'];
-		$path = $_FILES['url_picture']['name'];
-
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-		$file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/gif") {
-			$errors['file'] = 'Загрузите картинку в формате JPG';
-		}
-        else {
-			move_uploaded_file($tmp_name, 'uploads/' . $path);
-			$url_picture['path'] = $path;
-		}
-	}
-    else {
-		$errors['file'] = 'Вы не загрузили файл';
-	}
-
-    if (count($errors)) {
-		$page_content = include_template('add.php',
-                                         [
-            'lot' => $lot,
-            'errors' => $errors,
-            'dict' => $dict
-        ]);
-	}
-    else {
-		$page_content = include_template('lot.php', ['lot' => $lot]);
-	}
-
-} else {
-	$page_content = include_template('add.php', []);
-}
-*/
-
 
 $layout = include_template("layout.php", [
     "content" => $content,
@@ -132,3 +105,4 @@ $layout = include_template("layout.php", [
 print($layout);
 
 ?>
+

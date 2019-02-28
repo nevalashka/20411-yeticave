@@ -4,6 +4,9 @@ ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
+$user_id = 1;
+
+
 /**
  * Проверяет, что переданная дата соответствует формату ДД.ММ.ГГГГ
  * @param string $date строка с датой

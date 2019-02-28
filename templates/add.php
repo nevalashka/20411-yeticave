@@ -20,11 +20,9 @@
         <div class="form__item">
             <label for="category">Категория</label>
             <select id="category" name="category" required>
-
-                <option>Выберите категорию</option>
+                <option value="">Выберите категорию</option>
                 <?php foreach ($categories as $val): ?>
-                <option value=""><?= $val["category"];?>
-                </option>
+                <option value="<?= $val["id"];?>"><?= $val["category"];?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>
@@ -50,12 +48,13 @@
                 <span>+ Добавить</span>
             </label>
         </div>
+        <span class="form__error">Добавьте изображение лота</span>
     </div>
     <div class="form__container-three">
         <div class="form__item form__item--small">
             <label for="lot-rate">Начальная цена</label>
             <input id="lot-rate" type="number" name="start_price" placeholder="0" required>
-            <span class="form__error">Введите начальную цену</span>
+            <?php if(isset($errors['start_price'])): ?><span class="form__error"><?=$errors['start_price'];?></span><?php endif; ?>
         </div>
         <div class="form__item form__item--small">
             <label for="lot-step">Шаг ставки</label>
