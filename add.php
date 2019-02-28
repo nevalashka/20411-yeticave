@@ -4,6 +4,8 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
+$title = "Добавление лота";
+
 $categories = "";
 
 
@@ -28,25 +30,24 @@ if (!$link) {
 
         $filename = uniqid() . '.jpg';
         $lot['path'] = $filename;
-        move_uploaded_file($_FILES['url_picture']['tmp_name'], 'uploads/' . $filename);
+        move_uploaded_file($_FILES['url_picture']['tmp_name'], 'img/' . $filename);
 
         $sql = 'INSERT INTO lots (
-        date_creation,
-        category_id,
-        user_id,
         name_lot,
         description,
         url_picture,
         start_price,
         date_finish,
         bid_step,
+        user_id,
+        category_id
         )
-        VALUES (NOW(), ?, 1, ?, ?, ?, ?, ?, ?, ?);';
+        VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
 
         $stmt = db_get_prepare_stmt ($link, $sql,
                                     [
                                      $lot['date_creation'],
-                                     $lot['category'],
+                                     $lot['category_id'],
                                      $lot['user_id'],
                                      $lot['name_lot'],
                                      $lot['description'],
@@ -67,6 +68,7 @@ if (!$link) {
             $content = error_content($link);
         }
     }
+
 
 }
 
@@ -130,4 +132,3 @@ $layout = include_template("layout.php", [
 print($layout);
 
 ?>
-
