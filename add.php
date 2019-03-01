@@ -22,14 +22,21 @@ if (!$link) {
                 if (empty($lot[$field])) {
                     $errors[$field] = 'Поле не заполнено!';
         }
-
     }
-
-            $isExists = preg_match($category['id'], $lot['category']); // $lot['category'] == $category['id']  найти в массиве строку
-				if (!$isExists) {
-					$errors['category'] = "Укажите категорию лота"; // если строка нашлась в массиве - ошибки по категориям нет, можно дальще проверять остальные поля
+     //       if ($category)
+    //        $isExists = preg_match($category['id'], $lot['category']); // $lot['category'] == $category['id']  найти в массиве строку
+    //				if (!$isExists) {
+		//			$errors['category'] = "Укажите категорию лота"; // если строка нашлась в массиве - ошибки по категориям нет, можно дальще проверять остальные поля
             // если строка не нашлась - значит в $errors мы записываем ошибку по категориям
-				}
+		//		}
+
+
+                foreach ($category as $category['id']) {
+                    $category = 1;
+                 if ($category = 0) {
+                    $errors['category'] = "Укажите категорию лота";
+             }
+        }
 
 
             if(empty($lot['name_lot'])) { // на пустоту проверить name_lot, если пустой - пишем ошибку, если не пустой - ошибку не пишем
@@ -55,10 +62,11 @@ if (!$link) {
 				$errors['url_picture'] = "Загрузите изображение лота";
 			}
 
-			if (!empty($lot['start_price']) && (!FILTER_VALIDATE_INT($lot['start_price']))) { // start_price проверяем, действительно ли это число. Если это не число - пишем ошибку. $errors['start_price'] = "Введите начальную стоимость";
+			if (!empty($lot['start_price']) && FILTER_VALIDATE_INT($lot['start_price'])) { // start_price проверяем, действительно ли это число. Если это не число - пишем ошибку.
 				$errors['start_price'] = 'Введите начальную стоимость';
 			}
-			if (!empty($lot['bid_step']) && (!FILTER_VALIDATE_INT($lot['bid_step']))) { // bid_step - такая же проверка как и start_price
+
+			if (!empty($lot['bid_step']) && FILTER_VALIDATE_INT($lot['bid_step'])) { // bid_step - такая же проверка как и start_price
 				$errors['start_price'] = 'Цена должна быть числом';
 			}
 
