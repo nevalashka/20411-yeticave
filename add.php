@@ -4,50 +4,118 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
-$categories = "";
+$category = "";
+$required_fields = ['name_lot', 'category', 'description', 'start_price', 'bid_step', 'date_finish'];
 
 if (!$link) {
     $content = error_content();
 } else {
-    $sql = 'SELECT `id`, `category` FROM category';
-    $result = mysqli_query($link, $sql);
-    if($result) {
-        $category = fetch_all($result);
+    $sql_category = 'SELECT `id`, `category` FROM category';
+    $result_category = mysqli_query($link, $sql_category);
+
+    if($result_category) {
+        $category = fetch_all($result_category);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            $lot = $_POST;
+            $lot['user_id'] = $user_id;
+
+            foreach ($required_fields as $field) {
+                if (empty($lot[$field])) {
+                    $errors[$field] = 'Поле не заполнено!';
+        }
+    }
+            $error_category = false;
+                foreach ($category as $val_category) {
+                 if ($val_category['id'] == $lot['category']) {
+                    $error_category = true;
+             }
+        }
+
+            if(!$error_category) {
+                $error_category['category'] = 'Укажите категорию лота';
+            }
+
+			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) {
+				$tmp_name = $_FILES['url_picture']['tmp_name'];
+				$path = 'img/'.uniqid() . $_FILES['url_picture']['name'];
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$file_type = finfo_file($finfo, $tmp_name);
+				if ($file_type !== "image/jpg" && $file_type !== "image/jpeg" && $file_type !== "image/png") {
+					$errors['url_picture'] = 'Изображение должно быть в формате .jpg/jpeg или .png';
+				} else {
+					move_uploaded_file($tmp_name, $path);
+					$lot['url_picture'] = $path;
+				}
+			} else {
+				$errors['url_picture'] = "Загрузите изображение лота";
+			}
+
+            if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
+                $errors['bid_step'] = 'Введите число';
+            }
+
+            if($lot['bid_step'] < 0) {
+                $errors['bid_step'] = 'Введите ставку больше нуля';
+            }
+
+            if(!empty($lot['start_price']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
+                $errors['start_price'] = 'Введите ставку';
+            }
+
+            if($lot['start_price'] < 0) {
+                $errors['start_price'] = 'Введите ставку больше нуля';
+            }
+
+            if (!check_date_format($lot['date_finish'])) {
+                $errors['date_finish'] = 'Введите дату в формате ДД.ММ.ГГГГ';
+            }
+
+
+            if(empty($errors)) {
+                $sql_insert = 'INSERT INTO lots (date_creation, category_id, user_id, name_lot, description, url_picture, start_price, date_finish, bid_step )
+                VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
+
+                $stmt = db_get_prepare_stmt($link, $sql_insert, [
+                     $lot['category'],
+                     $lot['user_id'],
+                     $lot['name_lot'],
+                     $lot['description'],
+                     $lot['url_picture'],
+                     $lot['start_price'],
+                     $lot['date_finish'],
+                     $lot['bid_step']
+                ]);
+
+                $res = mysqli_stmt_execute($stmt);
+
+                if ($res) {
+                    $lot_id = mysqli_insert_id($link);
+                    header("Location: lot.php?id=". $lot_id);
+                }
+                else {
+                    $content = error_content($link);
+                }
+            }
+            else {
+                $content = include_template('add.php', [
+                    'categories' => $category,
+                    'errors' => $errors,
+                    'lot' => $lot
+                ]);
+            }
+        }
+
+        else {
+            $content = include_template('add.php', [
+                'categories' => $category
+            ]);
+        }
     }
     else {
         $content = error_content($link);
     }
-    $content = include_template('add.php',
-                                [
-                                    'categories' => $category
-                                ]);
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $lot = $_POST['lot'];
-
-        $filename = uniqid() . '.jpg';
-        $lot['path'] = $filename;
-        move_uploaded_file($_FILES['url_picture']['tmp_name'], 'uploads/' . $filename);
-
-        $sql = 'INSERT INTO lots (date_creation, user_id, category, name_lot, description, url_picture, start_price)
-        VALUES (NOW(), 1, ?, ?, ?, ?, ?)';
-        $stmt = db_get_prepare_stmt ($link, $sql,
-                                    [$lot['category'],
-                                     $lot['lot_name'],
-                                     $lot['description'],
-                                     $lot['url_picture']
-                                    ]);
-        $res = mysqli_stmt_execute($stmt);
-
-        if ($res) {
-            $gif_id = mysqli_insert_id($link);
-
-            header("Location: lot.php?id=" . $lot_id);
-        }
-        else {
-            $content = error_content($link);
-        }
-    }
-
 }
 
 $layout = include_template("layout.php", [
@@ -60,4 +128,3 @@ $layout = include_template("layout.php", [
 print($layout);
 
 ?>
-
