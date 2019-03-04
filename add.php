@@ -12,75 +12,74 @@ if (!$link) {
 } else {
     $sql_category = 'SELECT `id`, `category` FROM category';
     $result_category = mysqli_query($link, $sql_category);
+
     if($result_category) {
         $category = fetch_all($result_category);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
             $lot = $_POST;
             $lot['user_id'] = $user_id;
-            foreach ($required_fields as $field) { //проверка всех полей
+
+            foreach ($required_fields as $field) {
                 if (empty($lot[$field])) {
                     $errors[$field] = 'Поле не заполнено!';
         }
     }
-     //       if ($category)
-    //        $isExists = preg_match($category['id'], $lot['category']); // $lot['category'] == $category['id']  найти в массиве строку
-    //				if (!$isExists) {
-		//			$errors['category'] = "Укажите категорию лота"; // если строка нашлась в массиве - ошибки по категориям нет, можно дальще проверять остальные поля
-            // если строка не нашлась - значит в $errors мы записываем ошибку по категориям
-		//		}
-
-
-                foreach ($category as $category['id']) {
-                    $category = 1;
-                 if ($category = 0) {
-                    $errors['category'] = "Укажите категорию лота";
+            $error_category = false;
+                foreach ($category as $val_category) {
+                 if ($val_category['id'] == $lot['category']) {
+                    $error_category = true;
              }
         }
 
-
-            if(empty($lot['name_lot'])) { // на пустоту проверить name_lot, если пустой - пишем ошибку, если не пустой - ошибку не пишем
-                $errors['name_lot'] = "Введите название лота";
+            if(!$error_category) {
+                $error_category['category'] = 'Укажите категорию лота';
             }
 
-            if(empty($lot['description'])) {
-                $errors['description'] = "Введите описание лота";
-            }
-
-			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) { // проверка файла
+			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) {
 				$tmp_name = $_FILES['url_picture']['tmp_name'];
-				$path = $_FILES['url_picture']['name'];
+				$path = 'img/'.uniqid() . $_FILES['url_picture']['name'];
 				$finfo = finfo_open(FILEINFO_MIME_TYPE);
 				$file_type = finfo_file($finfo, $tmp_name);
 				if ($file_type !== "image/jpg" && $file_type !== "image/jpeg" && $file_type !== "image/png") {
 					$errors['url_picture'] = 'Изображение должно быть в формате .jpg/jpeg или .png';
 				} else {
-					move_uploaded_file($tmp_name, 'img/' .$path);
-					$lot['$path'] = 'img/' .$path;
+					move_uploaded_file($tmp_name, $path);
+					$lot['url_picture'] = $path;
 				}
 			} else {
 				$errors['url_picture'] = "Загрузите изображение лота";
 			}
 
-			if (!empty($lot['start_price']) && FILTER_VALIDATE_INT($lot['start_price'])) { // start_price проверяем, действительно ли это число. Если это не число - пишем ошибку.
-				$errors['start_price'] = 'Введите начальную стоимость';
-			}
+            if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
+                $errors['bid_step'] = 'Введите число';
+            }
 
-			if (!empty($lot['bid_step']) && FILTER_VALIDATE_INT($lot['bid_step'])) { // bid_step - такая же проверка как и start_price
-				$errors['start_price'] = 'Цена должна быть числом';
-			}
+            if($lot['bid_step'] < 0) {
+                $errors['bid_step'] = 'Введите ставку больше нуля';
+            }
 
+            if(!empty($lot['start_price']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
+                $errors['start_price'] = 'Введите ставку';
+            }
 
-            if (!check_date_format($lot['date_finish'])) { // date_finish - проверяем удовлетворяет ли дата условиям (с помощью функции, также не вчерашнее число должно быть)
+            if($lot['start_price'] < 0) {
+                $errors['start_price'] = 'Введите ставку больше нуля';
+            }
+
+            if (!check_date_format($lot['date_finish'])) {
                 $errors['date_finish'] = 'Введите дату в формате ДД.ММ.ГГГГ';
             }
 
-            if(empty($errors)) { // если $errors пустой - тогда мы можем выполнять $sql_insert
+
+            if(empty($errors)) {
                 $sql_insert = 'INSERT INTO lots (date_creation, category_id, user_id, name_lot, description, url_picture, start_price, date_finish, bid_step )
-                VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?);';
+                VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
                 $stmt = db_get_prepare_stmt($link, $sql_insert, [
                      $lot['category'],
+                     $lot['user_id'],
                      $lot['name_lot'],
                      $lot['description'],
                      $lot['url_picture'],
@@ -102,7 +101,8 @@ if (!$link) {
             else {
                 $content = include_template('add.php', [
                     'categories' => $category,
-                    'errors' => $errors
+                    'errors' => $errors,
+                    'lot' => $lot
                 ]);
             }
         }
