@@ -54,6 +54,15 @@ if (!$link) {
 				$errors['url_picture'] = "Загрузите изображение лота";
 			}
 
+            if (!validate_number($lot['bid_step'])) {
+                $errors['bid_step'] = 'Введите число больше 0';
+            }
+
+            if (!validate_number($lot['start_price'])) {
+                $errors['start_price'] = 'Введите число больше 0';
+            }
+
+           /*
             if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
                 $errors['bid_step'] = 'Введите число';
             }
@@ -69,7 +78,7 @@ if (!$link) {
             if($lot['start_price'] < 0) {
                 $errors['start_price'] = 'Введите ставку больше нуля';
             }
-
+            */
             if (!check_date_format($lot['date_finish'])) {
                 $errors['date_finish'] = 'Введите дату в формате ДД.ММ.ГГГГ';
             }

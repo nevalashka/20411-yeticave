@@ -6,14 +6,6 @@ ini_set('display_startup_errors', 1);
 
 $user_id = 1;
 
-
-/**
- * Проверяет, что переданная дата соответствует формату ДД.ММ.ГГГГ
- * @param string $date строка с датой
- * @return bool
- */
-
-
 function check_date_format($date) {
     $result = false;
     $regexp = '/(\d{2})\.(\d{2})\.(\d{4})/m';
@@ -25,6 +17,17 @@ function check_date_format($date) {
 check_date_format("04.02.2019"); // true
 check_date_format("15.23.1989"); // false
 check_date_format("1989-15-02"); // false
+
+
+function validate_number($val) {
+    if (!filter_var($val, FILTER_VALIDATE_INT)) {
+        return false;
+    }
+    if($val < 0) {
+        return false;
+    }
+    return true;
+}
 
 function db_get_prepare_stmt($link, $sql, $data = []) {
     $stmt = mysqli_prepare($link, $sql);
