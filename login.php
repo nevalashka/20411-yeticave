@@ -5,7 +5,7 @@ require_once("functions.php");
 require_once("data.php");
 
 $category = "";
-$required_fields = ['name_lot', 'category', 'description', 'start_price', 'bid_step', 'date_finish'];
+$required_fields = ['email', 'password', 'name', 'contact', 'bid_step', 'date_finish'];
 
 if (!$link) {
     $content = error_content();
@@ -101,7 +101,7 @@ if (!$link) {
                 }
             }
             else {
-                $content = include_template('add.php', [
+                $content = include_template('login.php', [
                     'categories' => $category,
                     'errors' => $errors,
                     'lot' => $lot
@@ -110,7 +110,7 @@ if (!$link) {
         }
 
         else {
-            $content = include_template('add.php', [
+            $content = include_template('login.php', [
                 'categories' => $category
             ]);
         }

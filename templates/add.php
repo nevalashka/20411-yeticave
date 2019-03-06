@@ -39,7 +39,7 @@
     </div>
     <div class="form__item form__item--wide <?= (isset($errors['description'])) ? 'form__item--invalid' : '';?>">
         <label for="message">Описание</label>
-        <textarea id="message" name="description" placeholder="Напишите описание лота" value="<?= (isset($lot['description'])) ? $lot['description'] : ''; ?>"></textarea>
+        <textarea id="message" name="description" placeholder="Напишите описание лота"><?= (isset($lot['description'])) ? $lot['description'] : ''; ?></textarea>
         <?php if(isset($errors['description'])): ?>
         <span class="form__error"><?=$errors['description'];?></span>
         <?php endif; ?>
