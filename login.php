@@ -26,16 +26,6 @@ if (!$link) {
                     $errors[$field] = 'Поле не заполнено!';
         }
     }
-            $error_category = false;
-                foreach ($category as $val_category) {
-                 if ($val_category['id'] == $lot['category']) {
-                    $error_category = true;
-             }
-        }
-
-            if(!$error_category) {
-                $error_category['category'] = 'Укажите категорию лота';
-            }
 
 			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) {
                 $file_extension = new SplFileInfo($_FILES['url_picture']['name']);
