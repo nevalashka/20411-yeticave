@@ -10,7 +10,8 @@
 </nav>
     <form class="form container" action="https://echo.htmlacademy.ru" method="post"> <!-- form--invalid -->
       <h2>Вход</h2>
-      <div class="form__item"> <!-- form__item--invalid -->
+      <div class="form__item">
+          <!-- form__item--invalid -->
         <label for="email">E-mail*</label>
         <input id="email" type="text" name="email" placeholder="Введите e-mail" required>
         <span class="form__error">Введите e-mail</span>

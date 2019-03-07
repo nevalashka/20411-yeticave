@@ -14,10 +14,6 @@ function check_date_format($date) {
     }
     return $result;
 }
-check_date_format("04.02.2019"); // true
-check_date_format("15.23.1989"); // false
-check_date_format("1989-15-02"); // false
-
 
 function validate_number($val) {
     if (!filter_var($val, FILTER_VALIDATE_INT)) {

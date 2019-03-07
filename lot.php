@@ -12,7 +12,6 @@ if (!$link) {
     $sql = 'SELECT `id`, `category` FROM category';
     $result = mysqli_query($link, $sql);
 
-   // if (!empty($result)) {//тут проверяем что результ не пустоуй?
         if(isset($_GET['id'])) {
             $lot_id = $_GET['id'];
         $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id WHERE l.id="'.$lot_id.'"';

@@ -62,23 +62,6 @@ if (!$link) {
                 $errors['start_price'] = 'Введите число больше 0';
             }
 
-           /*
-            if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
-                $errors['bid_step'] = 'Введите число';
-            }
-
-            if($lot['bid_step'] < 0) {
-                $errors['bid_step'] = 'Введите ставку больше нуля';
-            }
-
-            if(!empty($lot['start_price']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
-                $errors['start_price'] = 'Введите ставку';
-            }
-
-            if($lot['start_price'] < 0) {
-                $errors['start_price'] = 'Введите ставку больше нуля';
-            }
-            */
             if (!check_date_format($lot['date_finish'])) {
                 $errors['date_finish'] = 'Введите дату в формате ДД.ММ.ГГГГ';
             }
