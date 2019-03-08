@@ -4,8 +4,10 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
+session_start();
+
 $category = "";
-$required_fields = ['email', 'password', 'name', 'contact', 'bid_step', 'date_finish'];
+$required_fields = ['email', 'password'];
 
 if (!$link) {
     $content = error_content();
@@ -17,51 +19,14 @@ if (!$link) {
         $category = fetch_all($result_category);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            $lot = $_POST;
-            $lot['user_id'] = $user_id;
-
-            foreach ($required_fields as $field) {
-                if (empty($lot[$field])) {
-                    $errors[$field] = 'Поле не заполнено!';
-        }
-    }
-
-			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) {
-                $file_extension = new SplFileInfo($_FILES['url_picture']['name']);
-                $filename = uniqid().$file_extension;
-				$tmp_name = $_FILES['url_picture']['tmp_name'];
-				$path = 'img/'.$filename;
-				$finfo = finfo_open(FILEINFO_MIME_TYPE);
-				$file_type = finfo_file($finfo, $tmp_name);
-				if ($file_type !== "image/jpg" && $file_type !== "image/jpeg" && $file_type !== "image/png") {
-					$errors['url_picture'] = 'Изображение должно быть в формате .jpg/jpeg или .png';
-				} else {
-					move_uploaded_file($tmp_name, $path);
-					$lot['url_picture'] = $path;
-				}
-			} else {
-				$errors['url_picture'] = "Загрузите изображение лота";
+            $login = $_POST;
 			}
 
-            if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
-                $errors['bid_step'] = 'Введите число';
+        if (empty(login['email'])) {
+                $errors['email'] = "Укажите email пользователя";
             }
-
-            if($lot['bid_step'] < 0) {
-                $errors['bid_step'] = 'Введите ставку больше нуля';
-            }
-
-            if(!empty($lot['start_price']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
-                $errors['start_price'] = 'Введите ставку';
-            }
-
-            if($lot['start_price'] < 0) {
-                $errors['start_price'] = 'Введите ставку больше нуля';
-            }
-
-            if (!check_date_format($lot['date_finish'])) {
-                $errors['date_finish'] = 'Введите дату в формате ДД.ММ.ГГГГ';
+        if (empty(login['password'])) {
+                $errors['password'] = "Введите пароль";
             }
 
 
