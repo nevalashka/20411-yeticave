@@ -5,7 +5,7 @@ require_once("functions.php");
 require_once("data.php");
 
 $category = "";
-$required_fields = ['name_lot', 'category', 'description', 'start_price', 'bid_step', 'date_finish'];
+$required_fields = ['email', 'password', 'name', 'contact', 'bid_step', 'date_finish'];
 
 if (!$link) {
     $content = error_content();
@@ -26,16 +26,6 @@ if (!$link) {
                     $errors[$field] = 'Поле не заполнено!';
         }
     }
-            $error_category = false;
-                foreach ($category as $val_category) {
-                 if ($val_category['id'] == $lot['category']) {
-                    $error_category = true;
-             }
-        }
-
-            if(!$error_category) {
-                $error_category['category'] = 'Укажите категорию лота';
-            }
 
 			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) {
                 $file_extension = new SplFileInfo($_FILES['url_picture']['name']);
@@ -54,12 +44,20 @@ if (!$link) {
 				$errors['url_picture'] = "Загрузите изображение лота";
 			}
 
-            if (!validate_number($lot['bid_step'])) {
-                $errors['bid_step'] = 'Введите число больше 0';
+            if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
+                $errors['bid_step'] = 'Введите число';
             }
 
-            if (!validate_number($lot['start_price'])) {
-                $errors['start_price'] = 'Введите число больше 0';
+            if($lot['bid_step'] < 0) {
+                $errors['bid_step'] = 'Введите ставку больше нуля';
+            }
+
+            if(!empty($lot['start_price']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
+                $errors['start_price'] = 'Введите ставку';
+            }
+
+            if($lot['start_price'] < 0) {
+                $errors['start_price'] = 'Введите ставку больше нуля';
             }
 
             if (!check_date_format($lot['date_finish'])) {
@@ -93,7 +91,7 @@ if (!$link) {
                 }
             }
             else {
-                $content = include_template('add.php', [
+                $content = include_template('login.php', [
                     'categories' => $category,
                     'errors' => $errors,
                     'lot' => $lot
@@ -102,7 +100,7 @@ if (!$link) {
         }
 
         else {
-            $content = include_template('add.php', [
+            $content = include_template('login.php', [
                 'categories' => $category
             ]);
         }
