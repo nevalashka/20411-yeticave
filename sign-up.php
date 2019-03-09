@@ -117,6 +117,7 @@ $layout = include_template("layout.php", [
     "user_name" => $user_name,
     "title" => $title,
     "is_auth" => $is_auth,
+    "is_auth" => $is_auth,
     "categories" => $category
 ]);
 print($layout);

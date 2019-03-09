@@ -1,7 +1,7 @@
 <?php
 
 $is_auth = rand(0, 1);
-$user_name = "Boris Rukavishnikov";
+$user_name = "";
 $title = "Главная - YetiCave";
 
 ?>

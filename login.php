@@ -4,8 +4,6 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
-session_start();
-
 $title = "Вход - YetiCave";
 
 $errors = [];
@@ -64,9 +62,8 @@ if (!$link) {
 
 $layout = include_template("layout.php", [
     "content" => $content,
-    "user_name" => $user_name,
     "title" => $title,
-    "is_auth" => $is_auth,
+    "user_name" => $user_name,
     "categories" => $category
 ]);
 print($layout);

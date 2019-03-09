@@ -4,6 +4,7 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
+$title = "Добавление лота - YetiCave";
 $category = "";
 $required_fields = ['name_lot', 'category', 'description', 'start_price', 'bid_step', 'date_finish'];
 

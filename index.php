@@ -36,7 +36,6 @@ if (!$link) {
     }
 }
 
-
 $layout = include_template("layout.php", [
     "content" => $content,
     "user_name" => $user_name,
