@@ -81,7 +81,6 @@ if (!$link) {
                     $users['name'],
                     $users['avatar'],
                     $users['contact']
-
                 ]);
 
                 $res = mysqli_stmt_execute($stmt);

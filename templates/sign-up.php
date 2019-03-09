@@ -8,7 +8,7 @@
         <?php endforeach; ?>
     </ul>
 </nav>
-<form class="form container <?= (isset($errors)) ? 'form--invalid' : '';?>" action="sign-up.php" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form container <?= (isset($errors)) ? 'form--invalid' : '';?>" action="sign-up.php" method="post" enctype="multipart/form-data">
     <h2>Регистрация нового аккаунта</h2>
     <div class="form__item
                 <?= (isset($errors['email'])) ? 'form__item--invalid' : '';?>">
@@ -20,7 +20,7 @@
     <div class="form__item
                 <?= (isset($errors['password'])) ? 'form__item--invalid' : ''; ?>">
         <label for="password">Пароль*</label>
-        <input id="password" type="password" name="password" required placeholder="Введите пароль">
+        <input id="password" type="password" name="password" placeholder="Введите пароль">
         <span class="form__error">Введите пароль</span>
     </div>
     <div class="form__item
