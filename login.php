@@ -4,9 +4,9 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
-$title = "Вход - YetiCave";
-
 session_start();
+
+$title = "Вход - YetiCave";
 
 $errors = [];
 $category = "";
