@@ -39,7 +39,7 @@ if (!$link) {
             $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
 
             if(empty($errors) && !empty($user)) {
-                if (password_verify($login['password'], $login['password'])) {
+                if (password_verify($login['password'], $user['password'])) {
                     $_SESSION['user'] = $user;
                     header("Location: index.php");
                     exit();
