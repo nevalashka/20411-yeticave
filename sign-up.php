@@ -4,6 +4,8 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
+$title = "Регистрация - YetiCave";
+
 $category = "";
 $required_fields = ['email', 'password', 'name', 'contact'];
 
