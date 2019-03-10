@@ -4,8 +4,11 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
+$title = "Вход - YetiCave";
+
+$errors = [];
 $category = "";
-$required_fields = ['email', 'password', 'name', 'contact', 'bid_step', 'date_finish'];
+$required_fields = ['email', 'password'];
 
 if (!$link) {
     $content = error_content();
@@ -17,104 +20,50 @@ if (!$link) {
         $category = fetch_all($result_category);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $login = $_POST;
 
-            $lot = $_POST;
-            $lot['user_id'] = $user_id;
-
-            foreach ($required_fields as $field) {
-                if (empty($lot[$field])) {
-                    $errors[$field] = 'Поле не заполнено!';
-        }
-    }
-
-			if (!empty(($_FILES)) && ($_FILES['url_picture']['error']) == 0) {
-                $file_extension = new SplFileInfo($_FILES['url_picture']['name']);
-                $filename = uniqid().$file_extension;
-				$tmp_name = $_FILES['url_picture']['tmp_name'];
-				$path = 'img/'.$filename;
-				$finfo = finfo_open(FILEINFO_MIME_TYPE);
-				$file_type = finfo_file($finfo, $tmp_name);
-				if ($file_type !== "image/jpg" && $file_type !== "image/jpeg" && $file_type !== "image/png") {
-					$errors['url_picture'] = 'Изображение должно быть в формате .jpg/jpeg или .png';
-				} else {
-					move_uploaded_file($tmp_name, $path);
-					$lot['url_picture'] = $path;
-				}
-			} else {
-				$errors['url_picture'] = "Загрузите изображение лота";
-			}
-
-            if(!empty($lot['bid_step']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
-                $errors['bid_step'] = 'Введите число';
+            if (empty($login['email']) && !filter_var($login['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = "Введите email пользователя";
             }
 
-            if($lot['bid_step'] < 0) {
-                $errors['bid_step'] = 'Введите ставку больше нуля';
+            if (empty($login['password'])) {
+                $errors['password'] = "Введите пароль";
             }
 
-            if(!empty($lot['start_price']) && !filter_var($lot['bid_step'], FILTER_VALIDATE_INT)) {
-                $errors['start_price'] = 'Введите ставку';
-            }
+            $email = mysqli_real_escape_string($link, $login['email']);
+            $sql_mail = "SELECT * FROM users WHERE email = '$email'";
+            $res = mysqli_query($link, $sql_mail);
 
-            if($lot['start_price'] < 0) {
-                $errors['start_price'] = 'Введите ставку больше нуля';
-            }
+            $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
 
-            if (!check_date_format($lot['date_finish'])) {
-                $errors['date_finish'] = 'Введите дату в формате ДД.ММ.ГГГГ';
-            }
-
-
-            if(empty($errors)) {
-                $sql_insert = 'INSERT INTO lots (date_creation, category_id, user_id, name_lot, description, url_picture, start_price, date_finish, bid_step )
-                VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
-
-                $stmt = db_get_prepare_stmt($link, $sql_insert, [
-                     $lot['category'],
-                     $lot['user_id'],
-                     $lot['name_lot'],
-                     $lot['description'],
-                     $lot['url_picture'],
-                     $lot['start_price'],
-                     $lot['date_finish'],
-                     $lot['bid_step']
-                ]);
-
-                $res = mysqli_stmt_execute($stmt);
-
-                if ($res) {
-                    $lot_id = mysqli_insert_id($link);
-                    header("Location: lot.php?id=". $lot_id);
+            if(empty($errors) && !empty($user)) {
+                if (password_verify($login['password'], $user['password'])) {
+                    $_SESSION['user'] = $user;
+                    header("Location: index.php");
+                    exit();
                 }
                 else {
-                    $content = error_content($link);
+                    $errors['password'] = 'Неверный пароль';
                 }
             }
-            else {
-                $content = include_template('login.php', [
-                    'categories' => $category,
-                    'errors' => $errors,
-                    'lot' => $lot
-                ]);
-            }
+            $content = include_template('login.php', [
+               'categories' => $category,
+               'login' => $login,
+               'errors' => $errors
+            ]);
         }
-
         else {
             $content = include_template('login.php', [
                 'categories' => $category
             ]);
         }
     }
-    else {
-        $content = error_content($link);
-    }
 }
 
 $layout = include_template("layout.php", [
     "content" => $content,
-    "user_name" => $user_name,
     "title" => $title,
-    "is_auth" => $is_auth,
+    "user_name" => $user_name,
     "categories" => $category
 ]);
 print($layout);

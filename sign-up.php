@@ -4,6 +4,8 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
+$title = "Регистрация - YetiCave";
+
 $category = "";
 $required_fields = ['email', 'password', 'name', 'contact'];
 
@@ -79,7 +81,6 @@ if (!$link) {
                     $users['name'],
                     $users['avatar'],
                     $users['contact']
-
                 ]);
 
                 $res = mysqli_stmt_execute($stmt);
@@ -115,6 +116,7 @@ $layout = include_template("layout.php", [
     "content" => $content,
     "user_name" => $user_name,
     "title" => $title,
+    "is_auth" => $is_auth,
     "is_auth" => $is_auth,
     "categories" => $category
 ]);

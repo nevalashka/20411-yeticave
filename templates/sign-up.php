@@ -20,7 +20,7 @@
     <div class="form__item
                 <?= (isset($errors['password'])) ? 'form__item--invalid' : ''; ?>">
         <label for="password">Пароль*</label>
-        <input id="password" type="password" name="password" required placeholder="Введите пароль">
+        <input id="password" type="password" name="password" placeholder="Введите пароль">
         <span class="form__error">Введите пароль</span>
     </div>
     <div class="form__item
