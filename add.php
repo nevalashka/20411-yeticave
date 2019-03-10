@@ -4,14 +4,9 @@ require_once("init.php");
 require_once("functions.php");
 require_once("data.php");
 
-if (!isset($_SESSION['user'])) {
-    http_response_code(403);
-    header("Location: /404.php");
-    exit();
-}
-
 $title = "Добавление лота - YetiCave";
 $category = "";
+
 $required_fields = ['name_lot', 'category', 'description', 'start_price', 'bid_step', 'date_finish'];
 
 if (!$link) {
@@ -31,14 +26,14 @@ if (!$link) {
             foreach ($required_fields as $field) {
                 if (empty($lot[$field])) {
                     $errors[$field] = 'Поле не заполнено!';
-        }
-    }
+                }
+            }
             $error_category = false;
                 foreach ($category as $val_category) {
                  if ($val_category['id'] == $lot['category']) {
                     $error_category = true;
-             }
-        }
+                 }
+                }
 
             if(!$error_category) {
                 $error_category['category'] = 'Укажите категорию лота';
@@ -114,6 +109,11 @@ if (!$link) {
             ]);
         }
     }
+    else if (!isset($_SESSION['user'])) {
+            $content = include_template('404.php', [
+            'categories' => $category
+            ]);
+        }
     else {
         $content = error_content($link);
     }
