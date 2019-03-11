@@ -38,7 +38,7 @@
                         Мин. ставка <span>12 000 р</span>
                     </div>
                 </div>
-                <form class="lot-item__form" action="lot.php" method="post">
+                <form class="lot-item__form" action="lot.php?id=<?=$_GET['id']; ?>" method="post">
                     <p class="lot-item__form-item form__item <?= (isset($errors['bid'])) ? 'form__item--invalid' : '';?>">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="text" name="bid" placeholder="12 000">
@@ -51,9 +51,9 @@
             <h3>История ставок (<span>10</span>)</h3>
             <table class="history__list">
               <tr class="history__item">
-                <td class="history__name">??????</td>
-                <td class="history__price"><?= $bid[0]['bid_amount'] ;?></td>
-                <td class="history__time"><?= $bid[0]['bid_date'] ;?></td>
+                <td class="history__name"><?= $bids_fetch[0]['user_id'] ;?></td>
+                <td class="history__price"><?= $bids_fetch[0]['bid_amount'] ;?></td>
+                <td class="history__time"><?= $bids_fetch[0]['bid_date'] ;?></td>
               </tr>
               <tr class="history__item">
                 <td class="history__name">Константин</td>
