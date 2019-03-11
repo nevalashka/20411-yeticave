@@ -2,12 +2,12 @@
 
 require_once("init.php");
 require_once("functions.php");
-require_once("data.php");
 
 $title = "Лот - YetiCave";
 
 $category = "";
 $id = '';
+$errors = [];
 
 if (!$link) {
     $content = error_content();
@@ -16,20 +16,22 @@ if (!$link) {
     $result = mysqli_query($link, $sql);
 
         if(isset($_GET['id'])) {
-            $start_price_bid_step_sql = "SELECT * FROM lots WHERE id = '$id' LIMIT 1";
-            $bids_on_lot = "SELECT * FROM bids WHERE lot_id = '$id' ORDER BY id DESC LIMIT 1";
-            $bids_table = "SELECT * FROM bids WHERE lot_id = '$id' ORDER BY id DESC";
-            $lot_id = $_GET['id'];
+            $lot_id = intval($_GET['id']);
+
+            $start_price_bid_step_sql = "SELECT * FROM lots WHERE id = '$lot_id'";
+            $bids_table = "SELECT * FROM bids b JOIN users u ON b.user_id = u.id WHERE b.lot_id = '$lot_id' ORDER BY b.id DESC";
+            $bids_on_lot = $bids_table." LIMIT 1";
+
             $lots_sql = 'SELECT * FROM lots l JOIN category c ON l.category_id = c.id WHERE l.id="'.$lot_id.'"';
             $lots_result = mysqli_query($link, $lots_sql);
 
             $bids_result = mysqli_query($link, $bids_table);
 
             if (!empty($lots_result && $bids_table)) {
-            $category = fetch_all($result);
-            $lots = fetch_all($lots_result);
+                $category = fetch_all($result);
+                $lots = fetch_all($lots_result);
 
-            $bids_fetch = fetch_all ($bids_table);
+                $bids_fetch = fetch_all($bids_result);
 
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $bid = $_POST;
