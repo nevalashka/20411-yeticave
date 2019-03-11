@@ -51,7 +51,7 @@
             <h3>История ставок (<span>10</span>)</h3>
             <table class="history__list">
               <tr class="history__item">
-                <td class="history__name"><?= $user_name; ?></td>
+                <td class="history__name"></td>
                 <td class="history__price"><?= $bid[0]['bid_amount'] ;?></td>
                 <td class="history__time"><?= $bid[0]['bid_date'] ;?></td>
               </tr>
