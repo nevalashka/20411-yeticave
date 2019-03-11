@@ -23,8 +23,10 @@ if (!$link) {
             $category = fetch_all($result);
             $lots = fetch_all($lots_result);
 
-          //  $start_price_bid_step_sql = 'SELECT start_price, bid_step FROM lots WHERE lot_id = $_POST['id']';
-        //    $bids_on_lot = 'SELECT bid_amount FROM bids WHERE lot_id = $_POST['id']';
+            $start_price_bid_step_sql = 'SELECT * FROM lots WHERE id = "$id" LIMIT 1';
+
+            $bids_on_lot = 'SELECT * FROM bids WHERE id_lot = "$id" ORDER BY id DESC LIMIT 1';
+
 
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $bid = $_POST;
@@ -38,16 +40,16 @@ if (!$link) {
                         $errors['bid'] = 'введите ставку больше, чем текущая цена лота плюс шаг ставки';
                     }
                     if(empty($bids_on_lot)) {
-                  //      $sql_bid_insert = INSERT INTO bids (bid_amount, user_id, lot_id)
-                    //        VALUES ($bid['start_price'].$bid['bid_step'], 'user_id', $lot_id);
+                       $sql_bid_insert = "INSERT INTO bids (bid_amount, user_id, lot_id)
+                           VALUES ('".$bid["bid"]."', '".$bid["bid_step"]."', '".$user_id."', '".$lot_id."')";
                     }
                     else {
-                      //  $sql_bid_insert = INSERT INTO bids (bid_amount, user_id, lot_id)
-                        //    VALUES ($bid['bid_step'] /*В новую ставку записываем сумму последней ставки с введенным шагом, вообще не понял как взять последнию ставку */ );
+                    $sql_bid_insert = "INSERT INTO bids (bid_amount, user_id, lot_id) VALUES ('".$bid["bid"]."', '".$bid["bid_step"]."', '".$bids_on_lot."', '".$user_id."', '".$lot_id."')";
                     }
                 }
             $content = include_template("lot.php",[
                 "lot" => $lots,
+                "bid" => $bid,
                 "categories" => $category]);
             }
             else {
@@ -70,3 +72,6 @@ $layout = include_template("layout.php", [
 print($layout);
 
 ?>
+
+
+
